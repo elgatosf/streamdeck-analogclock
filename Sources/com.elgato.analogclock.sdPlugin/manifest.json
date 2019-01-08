@@ -1,0 +1,34 @@
+{
+  "Actions": [
+    {
+      "Icon": "action/images/actionimage",
+      "Name": "Analog Clock",
+      "States": [
+        {
+          "Image": "action/images/image"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show a nice analog clock",
+      "UUID": "com.elgato.analogclock.action"
+    }
+  ],
+  "Author": "Elgato",
+  "CodePath": "index.html",
+  "PropertyInspectorPath": "propertyinspector/index.html",
+  "Description": "Never be late with the Analog Clock.",
+  "Name": "Analog Clock",
+  "Icon": "pluginIcon",
+  "URL": "https://www.elgato.com/gaming/stream-deck",
+  "Version": "1.4",
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.11"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ]
+}

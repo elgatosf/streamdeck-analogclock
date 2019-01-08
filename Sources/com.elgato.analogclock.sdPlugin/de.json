@@ -1,0 +1,18 @@
+{
+  "Description": "Stets pünktlich sein mit der Analog Clock.", 
+  "Name": "Analog Clock", 
+  "com.elgato.clock.action": {
+    "Name": "Analog Clock", 
+    "Tooltip": "Eine schöne Analoguhr anzeigen"
+  },
+  
+  "Localization": {
+      "Face": "Zifferblatt",
+      "Black" : "Schwarz",
+      "Blue" : "Blau",
+      "Blueish" : "Bläulich",
+      "Green" : "Grün",
+      "Red": "Rot",
+      "White": "Weiß"
+  }
+}

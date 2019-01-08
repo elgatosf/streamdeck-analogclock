@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>com.elgato.analogclock PI</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="css/sdpi.css">
+</head>
+
+<body>
+	<div class="sdpi-wrapper hidden">
+		<div type="select" class="sdpi-item">
+			<div class="sdpi-item-label">Face</div>
+			<select class="sdpi-item-value select clockSelector" onchange="sendValueToPlugin(Number(event.target.value), 'clock_index')">
+			</select>
+		</div>
+	</div>
+
+	<script src="common.js"></script>
+	<script src="../action/js/clockfaces.js"></script>
+
+	<script>
+
+		/** Step 1: Subscribe to the 'connected' event
+		 * and call your own initialization method.
+		 * The connected - event is emitted, when StreamDeck 
+		 * has established a connection. 
+		 * The 'connected' event carries a JSON object containing
+		 * necessary information about the connection and the
+		 * inital data.
+		 */
+		var $localizedStrings = {};
+		var uuid,
+			actionInfo,
+			ctx,
+			lang;
+
+		$SD.on('connected', (jsonObj) => connected(jsonObj));
+		$SD.on('sendToPropertyInspector', (jsonObj) => receivedDataFromPlugin(jsonObj));
+
+		function receivedDataFromPlugin(jsonObj) {
+			// console.log('receivedDataFromPlugin: ', jsonObj);
+			if (jsonObj && jsonObj.payload) {
+				if (jsonObj.payload.hasOwnProperty('clock_index')) {
+					const oClockSelector = document.querySelector(".clockSelector");
+					const val = Math.round(jsonObj.payload['clock_index']);
+					oClockSelector && Array.prototype.forEach.call(oClockSelector.options, function (o) {
+						o.label = localize(o.label);
+						if (o.value !== val) {
+							oClockSelector.value = val;
+						}
+					})
+
+				}
+			}
+		}
+
+		function connected(jsonObj) {
+			uuid = jsonObj.uuid;
+			actionInfo = jsonObj.actionInfo.action;
+			ctx = jsonObj.actionInfo.context;
+			lang = jsonObj.applicationInfo.application.language;
+
+			/** Localization */
+			if ($localizedStrings && Object.keys($localizedStrings).length > 0) {
+				localizeUI();
+			}
+
+			const oClockSelector = document.querySelector(".clockSelector");
+			Object.keys(clockfaces).map(e => {
+				let option = document.createElement('option');
+				option.setAttribute('value', e);
+				option.setAttribute('label', localize(clockfaces[e].name));
+				oClockSelector.appendChild(option);
+			});
+
+
+			// request some data from the plugin (e.g. the current clockface of the clock)
+			var payload = {
+				'DATAREQUEST': true
+			};
+
+			$SD.api.sendToPlugin(uuid, actionInfo, payload);
+
+			const el = document.querySelector('.sdpi-wrapper');
+			el.classList.remove('hidden');
+
+		};
+
+		function sendValueToPlugin(value, param) {
+
+			console.log("SENDING VALUE TO PLUGIN: ", value, uuid, actionInfo);
+
+			if ($SD && $SD.connection) {
+				var payload = {};
+				if (param) {
+					payload[param] = value;
+				}
+				$SD.api.sendToPlugin(uuid, actionInfo, payload);
+			}
+		}
+
+		function localize (s) {
+			if (Utils.isUndefined(s)) return '';
+			let str = String(s);
+			try {
+				str = $localizedStrings[str] || str;
+			} catch (b) {}
+			return str;
+		};
+
+		function _e (s) {
+			return localize(s);
+		}
+
+		function localizeUI() {
+			const el = document.querySelector('.sdpi-wrapper');
+			Array.from(el.querySelectorAll('sdpi-item-label')).forEach(e => {
+				e.innerHTML = e.innerHTML.replace(e.innerText, localize(e.innerText));
+			});
+			Array.from(el.querySelectorAll('*:not(script)')).forEach(e => {  
+				if (e.childNodes && e.childNodes.length > 0 && e.childNodes[0].nodeValue && typeof e.childNodes[0].nodeValue === 'string') {
+					e.childNodes[0].nodeValue = localize(e.childNodes[0].nodeValue);
+				}
+			});
+		}
+
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{
+  "Description": "アナログ時計プラグインを使えばもう遅れることはありません。", 
+  "Name": "アナログ時計", 
+  "com.elgato.clock.action": {
+    "Name": "アナログ時計", 
+    "Tooltip": "ステキなアナログ時計を表示"
+  },
+  
+  "Localization": {
+      "Face": "文字盤",
+      "Black" : "ブラック",
+      "Blue" : "ブルー",
+      "Blueish" : "青みがかった",
+      "Green" : "グリーン",
+      "Red": "レッド",
+      "White": "白"
+  }
+}
