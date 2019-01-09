@@ -5,12 +5,14 @@
 
 `AnalogClock` is a plugin that displays a clock. You can change the style of the clock in its Property Inspector.
 
-Features:
+# Features
 
 - code written in Javascript
 - cross-platform (macOS, Windows)
 - simple Property Inspector to change the style of the clock
 - localized
+
+![](screenshot.png)
 
 
 # Installation
