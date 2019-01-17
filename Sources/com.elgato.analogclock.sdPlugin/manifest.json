@@ -20,7 +20,7 @@
   "Name": "Analog Clock",
   "Icon": "pluginIcon",
   "URL": "https://www.elgato.com/gaming/stream-deck",
-  "Version": "1.4",
+  "Version": "1.5",
   "OS": [
     {
       "Platform": "mac",
