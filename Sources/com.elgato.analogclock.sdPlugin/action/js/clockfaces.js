@@ -41,7 +41,7 @@ var clockfaces = [
             stroke: '#666666',
             background: '#ffffff'
         },
-        text: false
+        text: true
     },
     {
         name: 'Blue',
@@ -63,7 +63,7 @@ var clockfaces = [
             stroke: '#00ffff',
             background: '#de2200'
         },
-        text: false
+        text: true
     }
     // {
     //     name: 'Demo',
