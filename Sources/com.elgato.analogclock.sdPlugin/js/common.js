@@ -580,7 +580,7 @@ Utils.observeArray = function (object, callback) {
 window['_'] = Utils;
 
 /**
- * connectSocket
+ * connectElgatoStreamDeckSocket
  * This is the first function StreamDeck Software calls, when
  * establishing the connection to the plugin or the Property Inspector
  * @param {string} inPort - The socket's port to communicate with StreamDeck software.
@@ -591,7 +591,7 @@ window['_'] = Utils;
  **/
 
 // eslint-disable-next-line no-unused-vars
-function connectSocket (
+function connectElgatoStreamDeckSocket (
     inPort,
     inUUID,
     inMessageType,

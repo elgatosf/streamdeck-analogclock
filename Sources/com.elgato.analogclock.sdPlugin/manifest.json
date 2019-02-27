@@ -13,6 +13,7 @@
       "UUID": "com.elgato.analogclock.action"
     }
   ],
+  "SDKVersion": 2,
   "Author": "Elgato",
   "CodePath": "index.html",
   "PropertyInspectorPath": "propertyinspector/index.html",
@@ -30,5 +31,9 @@
       "Platform": "windows",
       "MinimumVersion": "10"
     }
-  ]
+  ],
+  "Software": 
+    {
+        "MinimumVersion" : "4.1"
+    }
 }

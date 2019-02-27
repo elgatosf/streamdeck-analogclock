@@ -6,7 +6,7 @@ var onchangeevt = 'onchange'; // 'oninput'; // change this, if you want interact
 let sdpiWrapper = document.querySelector('.sdpi-wrapper');
 
 $SD.on('connected', (jsn) => {
-    addDynamicStyles($SD.applicationInfo.colors, 'connectSocket');
+    addDynamicStyles($SD.applicationInfo.colors, 'connectElgatoStreamDeckSocket');
     sendValueToPlugin('propertyInspectorConnected', 'property_inspector');
     sdpiWrapper.innerHTML = '';
 
