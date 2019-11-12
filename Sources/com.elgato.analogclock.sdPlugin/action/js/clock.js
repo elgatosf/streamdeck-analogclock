@@ -59,8 +59,12 @@ function Clock(cnv)
 		var m = now.getMinutes();
 		var s = now.getSeconds();
 	
-		ctx.fillStyle = colors.background;
-    	ctx.fillRect(0, 0, cnv.width, cnv.height);
+		if (colors.background == "transparent") {
+			ctx.clearRect(0, 0, cnv.width, cnv.height);
+		} else {
+			ctx.fillStyle = colors.background;
+    		ctx.fillRect(0, 0, cnv.width, cnv.height);
+    	}
 		
 		for (var i = 0; i < 12; i++)
 		{

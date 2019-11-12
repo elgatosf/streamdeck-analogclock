@@ -1,7 +1,7 @@
 {
-  "Description": "Ne soyez plus jamais en retard, grâce à l'Horloge analogique.", 
+  "Description": "Soyez toujours à l’heure.", 
   "Name": "Horloge analogique", 
-  "com.elgato.clock.action": {
+  "com.elgato.analogclock.action": {
     "Name": "Horloge analogique", 
     "Tooltip": "Afficher une chouette horloge analogique"
   },
@@ -13,6 +13,7 @@
       "Blueish" : "Bleuté",
       "Green" : "Vert",
       "Red": "Rouge",
-      "White": "Blanc"
+      "White": "Blanc",
+      "Transparent": "Transparent"
   }
 }

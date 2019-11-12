@@ -64,7 +64,18 @@ var clockfaces = [
             background: '#de2200'
         },
         text: true
-    }
+    },
+    {
+		name: 'Transparent',
+		colors: {
+		  hour: '#ffaa00',
+		  minute: '#ffcc00',
+		  second: '#ffaaaa',
+		  stroke: '#00ffff',
+		  background: 'transparent'
+		},
+		text: true
+	}
     // {
     //     name: 'Demo',
     //     colors: {

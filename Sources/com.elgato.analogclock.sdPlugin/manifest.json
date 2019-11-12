@@ -17,11 +17,11 @@
   "Author": "Elgato",
   "CodePath": "index.html",
   "PropertyInspectorPath": "propertyinspector/index.html",
-  "Description": "Never be late with the Analog Clock.",
+  "Description": "Always be on time.",
   "Name": "Analog Clock",
   "Icon": "pluginIcon",
   "URL": "https://www.elgato.com/gaming/stream-deck",
-  "Version": "1.5",
+  "Version": "1.6",
   "OS": [
     {
       "Platform": "mac",

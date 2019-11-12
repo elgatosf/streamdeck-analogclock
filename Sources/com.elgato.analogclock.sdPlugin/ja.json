@@ -1,7 +1,7 @@
 {
-  "Description": "アナログ時計プラグインを使えばもう遅れることはありません。", 
+  "Description": "いつでも時間厳守。", 
   "Name": "アナログ時計", 
-  "com.elgato.clock.action": {
+  "com.elgato.analogclock.action": {
     "Name": "アナログ時計", 
     "Tooltip": "ステキなアナログ時計を表示"
   },
@@ -13,6 +13,7 @@
       "Blueish" : "青みがかった",
       "Green" : "グリーン",
       "Red": "レッド",
-      "White": "白"
+      "White": "白",
+      "Transparent": "Transparent"
   }
 }

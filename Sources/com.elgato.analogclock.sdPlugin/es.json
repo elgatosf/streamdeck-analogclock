@@ -1,7 +1,7 @@
 {
-  "Description": "No te retrases nunca con el Reloj analógico.", 
+  "Description": "Sin retrasos.", 
   "Name": "Reloj analógico", 
-  "com.elgato.clock.action": {
+  "com.elgato.analogclock.action": {
     "Name": "Reloj analógico", 
     "Tooltip": "Muestra un bonito reloj analógico"
   },
@@ -13,6 +13,7 @@
       "Blueish" : "Azulada",
       "Green" : "Verde",
       "Red": "Roja",
-      "White": "Blanca"
+      "White": "Blanca",
+      "Transparent": "Transparent"
   }
 }

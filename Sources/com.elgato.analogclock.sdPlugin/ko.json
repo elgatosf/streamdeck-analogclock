@@ -1,7 +1,7 @@
 {
-  "Description": "아날로그 시계 플러그인만 있으면 늦을 일이 없습니다.", 
+  "Description": "언제나 시간을 시키세요.", 
   "Name": "아날로그 시계", 
-  "com.elgato.clock.action": {
+  "com.elgato.analogclock.action": {
     "Name": "아날로그 시계", 
     "Tooltip": "멋진 아날로그 시계를 보여줍니다"
   },
@@ -13,6 +13,7 @@
       "Blueish" : "푸른색",
       "Green" : "초록색",
       "Red": "빨강색",
-      "White": "화이트"
+      "White": "화이트",
+      "Transparent": "Transparent"
   }
 }

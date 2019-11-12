@@ -1,7 +1,7 @@
 {
-  "Description": "Analog Clock 插件让您从不迟到。", 
+  "Description": "总是准时。", 
   "Name": "Analog Clock", 
-  "com.elgato.clock.action": {
+  "com.elgato.analogclock.action": {
     "Name": "Analog Clock", 
     "Tooltip": "显示为精准的模拟时钟"
   },
@@ -13,6 +13,7 @@
       "Blueish" : "浅蓝色",
       "Green" : "绿色",
       "Red": "红色",
-      "White": "白色"
+      "White": "白色",
+      "Transparent": "Transparent"
   }
 }
