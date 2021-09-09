@@ -2,130 +2,139 @@
 <html>
 
 <head>
-	<title>com.elgato.analogclock PI</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="css/sdpi.css">
+    <title>com.elgato.analogclock PI</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../common/css/sdpi.css">
 </head>
 
 <body>
-	<div class="sdpi-wrapper hidden">
-		<div type="select" class="sdpi-item">
-			<div class="sdpi-item-label">Face</div>
-			<select class="sdpi-item-value select clockSelector" onchange="sendValueToPlugin(Number(event.target.value), 'clock_index')">
-			</select>
-		</div>
-	</div>
+    <div class="sdpi-wrapper hidden">
+        <div type="select" class="sdpi-item">
+            <div class="sdpi-item-label">Face</div>
+            <select class="sdpi-item-value select clockSelector" onchange="sendValueToPlugin(event.target.value, 'clock_index')">
+            </select>
+        </div>
+        <div class="sdpi-item" id="single-check">
+            <div class="sdpi-item-label">Digital</div>
+            <div class="sdpi-item-value">
+                <div class="sdpi-item-child">
+                    <input id="clock_type" type="checkbox" value="digital" onchange="sendValueToPlugin(event.target.checked ? 'digital' : 'analog', 'clock_type')">
+                    <label for="clock_type" class="sdpi-item-label"><span></span></label>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<script src="common.js"></script>
-	<script src="../action/js/clockfaces.js"></script>
+    <script src="../common/common.js"></script>
+    <script src="../action/js/clockfaces.js"></script>
 
-	<script>
+    <script>
 
-		/** Step 1: Subscribe to the 'connected' event
-		 * and call your own initialization method.
-		 * The connected - event is emitted, when StreamDeck 
-		 * has established a connection. 
-		 * The 'connected' event carries a JSON object containing
-		 * necessary information about the connection and the
-		 * inital data.
-		 */
-		var $localizedStrings = {};
-		var uuid,
-			actionInfo,
-			ctx,
-			lang;
+        /** Step 1: Subscribe to the 'connected' event
+         * and call your own initialization method.
+         * The connected - event is emitted, when StreamDeck 
+         * has established a connection. 
+         * The 'connected' event carries a JSON object containing
+         * necessary information about the connection and the
+         * inital data.
+         */
+        var MSETTINGS = {};
+        var $localizedStrings = {};
+        var uuid,
+            actionInfo,
+            ctx,
+            lang;
 
-		$SD.on('connected', (jsonObj) => connected(jsonObj));
-		$SD.on('sendToPropertyInspector', (jsonObj) => receivedDataFromPlugin(jsonObj));
+        $SD.on('connected', (jsonObj) => {
 
-		function receivedDataFromPlugin(jsonObj) {
-			// console.log('receivedDataFromPlugin: ', jsonObj);
-			if (jsonObj && jsonObj.payload) {
-				if (jsonObj.payload.hasOwnProperty('clock_index')) {
-					const oClockSelector = document.querySelector(".clockSelector");
-					const val = Math.round(jsonObj.payload['clock_index']);
-					oClockSelector && Array.prototype.forEach.call(oClockSelector.options, function (o) {
-						o.label = localize(o.label);
-						if (o.value !== val) {
-							oClockSelector.value = val;
-						}
-					})
+            $SD.api.getSettings();
 
-				}
-			}
-		}
+            uuid = jsonObj.uuid;
+            actionInfo = jsonObj.actionInfo.action;
+            ctx = jsonObj.actionInfo.context;
+            lang = jsonObj.applicationInfo.application.language;
 
-		function connected(jsonObj) {
-			uuid = jsonObj.uuid;
-			actionInfo = jsonObj.actionInfo.action;
-			ctx = jsonObj.actionInfo.context;
-			lang = jsonObj.applicationInfo.application.language;
+            /** Localization */
+            if($localizedStrings && Object.keys($localizedStrings).length > 0) {
+                localizeUI();
+            }
 
-			/** Localization */
-			if ($localizedStrings && Object.keys($localizedStrings).length > 0) {
-				localizeUI();
-			}
+            const oClockSelector = document.querySelector(".clockSelector");
+            Object.keys(clockfaces).map(e => {
+                let option = document.createElement('option');
+                option.setAttribute('value', e);
+                option.setAttribute('label', localize(clockfaces[e].name));
+                oClockSelector.appendChild(option);
+            });
 
-			const oClockSelector = document.querySelector(".clockSelector");
-			Object.keys(clockfaces).map(e => {
-				let option = document.createElement('option');
-				option.setAttribute('value', e);
-				option.setAttribute('label', localize(clockfaces[e].name));
-				oClockSelector.appendChild(option);
-			});
+            const el = document.querySelector('.sdpi-wrapper');
+            el.classList.remove('hidden');
+
+        });
+
+        $SD.on('didReceiveSettings', (jsonObj) => {
+
+            // console.log("didReceiveSettings", jsonObj);
+
+            if(jsonObj && jsonObj.payload && jsonObj.payload.settings) {
+
+                MSETTINGS = jsonObj.payload.settings;
+
+                if(jsonObj.payload.settings.hasOwnProperty('clock_type')) {
+                    const oClockType = document.querySelector("#clock_type");
+                    oClockType.checked = jsonObj.payload.settings.clock_type === 'digital';
+                };
+                if(jsonObj.payload.settings.hasOwnProperty('clock_index')) {
+                    const oClockSelector = document.querySelector(".clockSelector");
+                    const val = Math.round(jsonObj.payload.settings.clock_index);
+                    oClockSelector && Array.prototype.forEach.call(oClockSelector.options, function(o) {
+                        o.label = localize(o.label);
+                        if(o.value !== val) {
+                            oClockSelector.value = val;
+                        }
+                    })
+
+                }
+            }
+        });
 
 
-			// request some data from the plugin (e.g. the current clockface of the clock)
-			var payload = {
-				'DATAREQUEST': true
-			};
 
-			$SD.api.sendToPlugin(uuid, actionInfo, payload);
+        function sendValueToPlugin(value, param) {
 
-			const el = document.querySelector('.sdpi-wrapper');
-			el.classList.remove('hidden');
+            MSETTINGS[param] = value;
 
-		};
+            if($SD && $SD.connection) {
+                $SD.api.setSettings(null, MSETTINGS);
+            }
+        }
 
-		function sendValueToPlugin(value, param) {
+        function localize(s) {
+            if(Utils.isUndefined(s)) return '';
+            let str = String(s);
+            try {
+                str = $localizedStrings[str] || str;
+            } catch(b) {}
+            return str;
+        };
 
-			//console.log("SENDING VALUE TO PLUGIN: ", value, uuid, actionInfo);
+        function _e(s) {
+            return localize(s);
+        }
 
-			if ($SD && $SD.connection) {
-				var payload = {};
-				if (param) {
-					payload[param] = value;
-				}
-				$SD.api.sendToPlugin(uuid, actionInfo, payload);
-			}
-		}
+        function localizeUI() {
+            const el = document.querySelector('.sdpi-wrapper');
+            Array.from(el.querySelectorAll('sdpi-item-label')).forEach(e => {
+                e.innerHTML = e.innerHTML.replace(e.innerText, localize(e.innerText));
+            });
+            Array.from(el.querySelectorAll('*:not(script)')).forEach(e => {
+                if(e.childNodes && e.childNodes.length > 0 && e.childNodes[0].nodeValue && typeof e.childNodes[0].nodeValue === 'string') {
+                    e.childNodes[0].nodeValue = localize(e.childNodes[0].nodeValue);
+                }
+            });
+        }
 
-		function localize (s) {
-			if (Utils.isUndefined(s)) return '';
-			let str = String(s);
-			try {
-				str = $localizedStrings[str] || str;
-			} catch (b) {}
-			return str;
-		};
-
-		function _e (s) {
-			return localize(s);
-		}
-
-		function localizeUI() {
-			const el = document.querySelector('.sdpi-wrapper');
-			Array.from(el.querySelectorAll('sdpi-item-label')).forEach(e => {
-				e.innerHTML = e.innerHTML.replace(e.innerText, localize(e.innerText));
-			});
-			Array.from(el.querySelectorAll('*:not(script)')).forEach(e => {  
-				if (e.childNodes && e.childNodes.length > 0 && e.childNodes[0].nodeValue && typeof e.childNodes[0].nodeValue === 'string') {
-					e.childNodes[0].nodeValue = localize(e.childNodes[0].nodeValue);
-				}
-			});
-		}
-
-	</script>
+    </script>
 
 </body>
 
